@@ -1,7 +1,7 @@
-use std::{env, str};
+use std::env;
 
-mod bases;
-use bases::{FromHex, ToHex};
+mod conversions;
+use conversions::{FromHex, ToHex, BytesToString};
 
 fn main() {
     let hex1 = match env::args().nth(1) {
@@ -16,15 +16,15 @@ fn main() {
 
     println!("1st string");
     println!("hex: {}", hex1);
-    println!("text: {}", str::from_utf8(&bytes1).unwrap());
+    println!("text: {}", bytes1.bytes_to_string());
 
     println!("\n2nd string");
     println!("hex: {}", hex2);
-    println!("text: {}", str::from_utf8(&bytes2).unwrap());
+    println!("text: {}", bytes2.bytes_to_string());
 
-    let xor_bytes: Vec<_> = bytes1.iter().zip(bytes2).map(|(b1, b2)| b1 ^ b2).collect();
+    let xored_bytes: Vec<_> = bytes1.iter().zip(bytes2).map(|(b1, b2)| b1 ^ b2).collect();
 
     println!("\nxored strings");
-    println!("hex: {}", xor_bytes.to_hex());
-    println!("text: {}", str::from_utf8(&xor_bytes).unwrap());
+    println!("hex: {}", xored_bytes.to_hex());
+    println!("text: {}", xored_bytes.bytes_to_string());
 }

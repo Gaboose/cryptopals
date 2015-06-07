@@ -1,7 +1,7 @@
-use std::{env, str};
+use std::env;
 
-mod bases;
-use bases::{FromHex, ToHex};
+mod conversions;
+use conversions::{FromHex, ToHex, BytesToString};
 
 fn count_chars<I>(bytes: I) -> u32 where I: Iterator<Item=u8> {
     let mut count = 0;
@@ -23,11 +23,11 @@ fn main() {
 
     println!("cipher");
     println!("hex: {}", hex);
-    println!("text: {}", str::from_utf8(&bytes).unwrap());
+    println!("text: {}", bytes.bytes_to_string());
 
     let scores: Vec<_> = (0..0xFF).map(|key| {
-        let candidates = bytes.iter().map(|byte| byte ^ key);
-        count_chars(candidates)
+        let candidate = bytes.iter().map(|byte| byte ^ key);
+        count_chars(candidate)
     }).collect();
 
     let mut sorted_scores: Vec<_> = (0..0xFFu8).zip(scores).collect();
@@ -35,7 +35,7 @@ fn main() {
 
     let best_scores = sorted_scores.iter().take(10);
 
-    println!("\nbest keys");
+    println!("\nbest {} keys", best_scores.len());
     print!("score:");
     for &(_key, score) in best_scores.clone() {
         print!(" {}", score);
@@ -54,5 +54,5 @@ fn main() {
 
     println!("\n\nmessage");
     println!("hex: {}", message.to_hex());
-    println!("text: {}", str::from_utf8(&message).unwrap());
+    println!("text: {}", message.bytes_to_string());
 }

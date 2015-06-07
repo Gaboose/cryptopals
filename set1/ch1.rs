@@ -1,7 +1,7 @@
-use std::{env, str};
+use std::env;
 
-mod bases;
-use bases::{FromHex, ToBase64};
+mod conversions;
+use conversions::{FromHex, ToBase64, BytesToString};
 
 fn main() {
     let hex = match env::args().nth(1) {
@@ -10,7 +10,7 @@ fn main() {
     };
     println!("hex: {}", hex);
     let bytes = hex.from_hex();
-    println!("text: {}", str::from_utf8(&bytes).unwrap());
+    println!("text: {}", bytes.bytes_to_string());
     let base64 = bytes.to_base64();
     println!("base64: {}", base64);
 }
