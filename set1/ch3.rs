@@ -33,19 +33,19 @@ fn main() {
     let mut sorted_scores: Vec<_> = (0..0xFFu8).zip(scores).collect();
     sorted_scores.sort_by(|&(_, el1), &(_, el2)| el2.cmp(&el1));
 
-    let best_scores = sorted_scores.iter().take(10);
+    let top_scores = sorted_scores.iter().take(10);
 
-    println!("\nbest {} keys", best_scores.len());
+    println!("\ntop {} keys", top_scores.len());
     print!("score:");
-    for &(_key, score) in best_scores.clone() {
+    for &(_key, score) in top_scores.clone() {
         print!(" {}", score);
     }
     print!("\nhex:");
-    for &(key, _score) in best_scores.clone() {
+    for &(key, _score) in top_scores.clone() {
         print!(" {}", vec![key].to_hex());
     }
     print!("\ntext:");
-    for &(key, _score) in best_scores {
+    for &(key, _score) in top_scores {
         print!(" {}", key as char);
     }
 
